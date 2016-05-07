@@ -10,14 +10,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView android:id="@android:id/text1"
+        <TextView android:id="@+id/textTitle"
             style="?android:textAppearanceLarge"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <TextView style="?android:textAppearanceMedium"
+        <TextView android:id="@+id/textInfo"
+            style="?android:textAppearanceMedium"
             android:lineSpacingMultiplier="1.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
