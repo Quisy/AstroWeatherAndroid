@@ -11,28 +11,28 @@ import java.util.Calendar;
 public class AstroWeatherService {
 
     private static AstroCalculator _astroCalculator;
-    private Settings _settings;
 
     public AstroWeatherService()
     {
-        _settings = new Settings();
         _astroCalculator = new AstroCalculator(getCurrentDateTime(),getLocation());
     }
 
 
     public AstroCalculator.SunInfo getSunInfo()
     {
+        _astroCalculator.setDateTime(getCurrentDateTime());
         return _astroCalculator.getSunInfo();
     }
 
     public AstroCalculator.MoonInfo getMoonInfo()
     {
+        _astroCalculator.setDateTime(getCurrentDateTime());
         return  _astroCalculator.getMoonInfo();
     }
 
     private AstroCalculator.Location getLocation()
     {
-        return new AstroCalculator.Location(_settings.Location.Latitude,_settings.Location.Longitude);
+        return new AstroCalculator.Location(Settings.Location.Latitude,Settings.Location.Longitude);
     }
 
     private AstroDateTime getCurrentDateTime()

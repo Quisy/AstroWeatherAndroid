@@ -12,7 +12,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button btnSave;
     private EditText txtLatitude, txtLongitude, txtRefreshTime;
-    private Settings _settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +20,14 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _settings = new Settings();
 
         btnSave = (Button) findViewById(R.id.btnSave);
         txtLatitude = (EditText) findViewById(R.id.txtLatitude);
-        txtLatitude.setText(String.valueOf(_settings.Location.Latitude));
+        txtLatitude.setText(String.valueOf(Settings.Location.Latitude));
         txtLongitude = (EditText) findViewById(R.id.txtLongitude);
-        txtLongitude.setText(String.valueOf(_settings.Location.Longitude));
+        txtLongitude.setText(String.valueOf(Settings.Location.Longitude));
         txtRefreshTime = (EditText) findViewById(R.id.txtRefreshTime);
-        txtRefreshTime.setText(String.valueOf(_settings.Time.RefreshTime));
+        txtRefreshTime.setText(String.valueOf(Settings.Time.RefreshTime));
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +40,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void SaveSettings()
     {
-        _settings.Location.Longitude = Double.parseDouble(txtLongitude.getText().toString());
-        _settings.Location.Latitude = Double.parseDouble(txtLatitude.getText().toString());
-        _settings.Time.RefreshTime = Integer.parseInt(txtRefreshTime.getText().toString());
+        Settings.Location.Longitude = Double.parseDouble(txtLongitude.getText().toString());
+        Settings.Location.Latitude = Double.parseDouble(txtLatitude.getText().toString());
+        Settings.Time.RefreshTime = Integer.parseInt(txtRefreshTime.getText().toString());
 
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
         startActivity(intent);

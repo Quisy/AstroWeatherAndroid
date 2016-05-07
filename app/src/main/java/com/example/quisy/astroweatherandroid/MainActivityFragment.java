@@ -51,7 +51,15 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new ScreenSlidePageFragment();
+            if (position == 0)
+            {
+                return new SunInfoFragment();
+            }
+            else
+            {
+                return new MoonInfoFragment();
+            }
+
         }
 
         @Override
