@@ -12,8 +12,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button btnSave;
     private EditText txtLatitude, txtLongitude, txtRefreshTime;
-    private Settings.Time timeSettings;
-    private Settings.Location locationSettings;
+    private Settings _settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +21,15 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        timeSettings = new Settings.Time();
-        locationSettings = new Settings.Location();
+        _settings = new Settings();
 
         btnSave = (Button) findViewById(R.id.btnSave);
         txtLatitude = (EditText) findViewById(R.id.txtLatitude);
-        txtLatitude.setText(String.valueOf(locationSettings.Latitude));
+        txtLatitude.setText(String.valueOf(_settings.Location.Latitude));
         txtLongitude = (EditText) findViewById(R.id.txtLongitude);
-        txtLongitude.setText(String.valueOf(locationSettings.Longitude));
+        txtLongitude.setText(String.valueOf(_settings.Location.Longitude));
         txtRefreshTime = (EditText) findViewById(R.id.txtRefreshTime);
-        txtRefreshTime.setText(String.valueOf(timeSettings.RefrehTime));
+        txtRefreshTime.setText(String.valueOf(_settings.Time.RefreshTime));
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,9 +42,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void SaveSettings()
     {
-        locationSettings.Longitude = Double.parseDouble(txtLongitude.getText().toString());
-        locationSettings.Latitude = Double.parseDouble(txtLatitude.getText().toString());
-        timeSettings.RefrehTime = Integer.parseInt(txtRefreshTime.getText().toString());
+        _settings.Location.Longitude = Double.parseDouble(txtLongitude.getText().toString());
+        _settings.Location.Latitude = Double.parseDouble(txtLatitude.getText().toString());
+        _settings.Time.RefreshTime = Integer.parseInt(txtRefreshTime.getText().toString());
 
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
         startActivity(intent);

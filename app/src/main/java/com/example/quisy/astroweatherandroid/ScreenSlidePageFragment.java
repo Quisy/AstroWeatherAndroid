@@ -18,8 +18,9 @@ import java.util.Calendar;
  */
 public class ScreenSlidePageFragment extends Fragment {
 
-    private Settings.Location locationSettings;
-    private Settings.Time timeSettings;
+
+    private AstroWeatherService _astroWeatherService;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,30 +29,11 @@ public class ScreenSlidePageFragment extends Fragment {
                 R.layout.fragment_screen_slide_page, container, false);
 
 
-        timeSettings = new Settings.Time();
-        locationSettings = new Settings.Location();
+        _astroWeatherService = new AstroWeatherService();
 
         TextView title = (TextView) rootView.findViewById(R.id.textTitle);
-        title.setText(String.valueOf(timeSettings.RefrehTime));
-
         TextView content = (TextView) rootView.findViewById(R.id.textInfo);
-        content.setText(String.valueOf(locationSettings.Latitude) + ", " + String.valueOf(locationSettings.Longitude));
 
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = calendar.get(Calendar.HOUR);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
-
-        AstroDateTime dateTime = new AstroDateTime(year,month,day,hour,minute,second,1,true);
-
-        AstroCalculator.Location location = new AstroCalculator.Location(10,10);
-
-        AstroCalculator astroCalculator = new AstroCalculator(dateTime,location);
-
-        AstroCalculator.MoonInfo moonInfo = astroCalculator.getMoonInfo();
 
 
 

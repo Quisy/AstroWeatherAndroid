@@ -5,13 +5,16 @@ package com.example.quisy.astroweatherandroid;
  */
 public class Settings {
 
+    public Location Location = new Location();
+    public Time Time = new Time();
+
     public static class Location {
         public static double Latitude = 0;
         public static double Longitude = 0;
     }
 
     public static class Time {
-        public static int RefrehTime = 0;
+        public static int RefreshTime = 0;
     }
 
 }
