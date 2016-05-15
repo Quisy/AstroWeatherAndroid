@@ -2,6 +2,7 @@ package com.example.quisy.astroweatherandroid;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,27 @@ public class MoonInfoFragment extends Fragment {
         lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
         lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
         lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
+
+
+        final Handler hMoon = new Handler();
+        final int delay = Settings.Time.RefreshTime * 60000;
+
+        if (delay > 0) {
+
+            hMoon.postDelayed(new Runnable() {
+                public void run() {
+                    AstroCalculator.MoonInfo moonInfo = _astroWeatherService.getMoonInfo();
+
+                    lblMoonrise.setText("Moonrise: " + moonInfo.getMoonrise().toString());
+                    lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
+                    lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
+                    lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
+                    System.out.println("test2");
+                    hMoon.postDelayed(this, delay);
+                }
+            }, delay);
+
+        }
 
 
         return rootView;
