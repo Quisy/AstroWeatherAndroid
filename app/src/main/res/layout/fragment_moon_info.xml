@@ -18,6 +18,20 @@
             android:layout_marginBottom="16dp"
             android:text="Moon"/>
 
+        <TextView android:id="@+id/lblMoonAge"
+            style="?android:textAppearanceSmall"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test" />
+
+        <TextView android:id="@+id/lblMoonIllumination"
+            style="?android:textAppearanceSmall"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test" />
+
         <TextView android:id="@+id/lblMoonrise"
             style="?android:textAppearanceSmall"
             android:lineSpacingMultiplier="1.2"

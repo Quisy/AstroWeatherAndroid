@@ -14,7 +14,7 @@ import com.astrocalculator.AstroCalculator;
 public class MoonInfoFragment extends Fragment {
 
     private AstroWeatherService _astroWeatherService;
-    TextView lblMoonrise, lblMoonset, lblNextFullMoon, lblNextNewMoon;
+    TextView lblMoonrise, lblMoonset, lblNextFullMoon, lblNextNewMoon, lblMoonAge, lblMoonIllumination;
 
 
     @Override
@@ -29,6 +29,9 @@ public class MoonInfoFragment extends Fragment {
         lblMoonset = (TextView) rootView.findViewById(R.id.lblMoonset);
         lblNextFullMoon = (TextView) rootView.findViewById(R.id.lblNextFullMoon);
         lblNextNewMoon = (TextView) rootView.findViewById(R.id.lblNextNewMoon);
+        lblMoonAge = (TextView) rootView.findViewById(R.id.lblMoonAge);
+        lblMoonIllumination = (TextView) rootView.findViewById(R.id.lblMoonIllumination);
+
 
 
         AstroCalculator.MoonInfo moonInfo = _astroWeatherService.getMoonInfo();
@@ -38,6 +41,8 @@ public class MoonInfoFragment extends Fragment {
         lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
         lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
         lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
+        lblMoonAge.setText("Age: " + Double.toString(moonInfo.getAge()));
+        lblMoonIllumination.setText("Illumination: " +Double.toString(moonInfo.getIllumination()));
 
 
         final Handler hMoon = new Handler();
@@ -53,7 +58,8 @@ public class MoonInfoFragment extends Fragment {
                     lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
                     lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
                     lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
-                    System.out.println("test2");
+                    lblMoonAge.setText("Age: " + Double.toString(moonInfo.getAge()));
+                    lblMoonIllumination.setText("Illumination: " +Double.toString(moonInfo.getIllumination()));
                     hMoon.postDelayed(this, delay);
                 }
             }, delay);

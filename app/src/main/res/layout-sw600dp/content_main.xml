@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:rowCount="2"
+    android:columnCount="3"
+    android:orientation="vertical">
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragmentSunInfo"
+            android:name="com.example.quisy.astroweatherandroid.SunInfoFragment"
+            android:layout_weight="0.5"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/fragment_sun_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragmentMoonInfo"
+            android:name="com.example.quisy.astroweatherandroid.MoonInfoFragment"
+            android:layout_weight="0.5"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/fragment_moon_info"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+    </TableRow>
+
+</TableLayout>
+
