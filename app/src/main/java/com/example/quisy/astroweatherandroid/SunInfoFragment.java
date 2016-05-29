@@ -3,12 +3,16 @@ package com.example.quisy.astroweatherandroid;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.astrocalculator.AstroCalculator;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -18,7 +22,7 @@ public class SunInfoFragment extends Fragment {
 
 
     private AstroWeatherService _astroWeatherService;
-    TextView lblSunrise, lblSunriseAzimuth, lblSunset, lblSunsetAzimuth, lblTwilightMorning, lblTwilightEvening;
+    TextView lblSunrise, lblSunriseAzimuth, lblSunset, lblSunsetAzimuth, lblTwilightMorning, lblTwilightEvening, lblTime;
 
 
     @Override
@@ -53,6 +57,7 @@ public class SunInfoFragment extends Fragment {
 
             hSun.postDelayed(new Runnable() {
                 public void run() {
+
                     AstroCalculator.SunInfo sunInfo = _astroWeatherService.getSunInfo();
                     lblSunrise.setText("Sunrise: " + sunInfo.getSunrise().toString());
                     lblSunriseAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
@@ -60,12 +65,14 @@ public class SunInfoFragment extends Fragment {
                     lblSunsetAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
                     lblTwilightMorning.setText("Twilight morning: " + sunInfo.getTwilightMorning().toString());
                     lblTwilightEvening.setText("Twilight evening: " + sunInfo.getTwilightEvening().toString());
-                    System.out.println("test1");
                     hSun.postDelayed(this, delay);
                 }
             }, delay);
 
         }
+
+
+
 
 
         return rootView;
