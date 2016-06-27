@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.astrocalculator.AstroCalculator;
 import com.example.quisy.astroweatherandroid.Models.Moon;
 import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Services.LocationService;
 
 public class MoonInfoFragment extends Fragment {
 
@@ -63,6 +64,8 @@ public class MoonInfoFragment extends Fragment {
             }, delay);
 
         }
+
+
 
 
         return rootView;

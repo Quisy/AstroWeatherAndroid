@@ -2,6 +2,7 @@ package com.example.quisy.astroweatherandroid;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,19 @@ import com.astrocalculator.AstroCalculator;
 import com.example.quisy.astroweatherandroid.Models.Moon;
 import com.example.quisy.astroweatherandroid.Models.Settings;
 import com.example.quisy.astroweatherandroid.Models.Sun;
+import com.example.quisy.astroweatherandroid.Services.AstroWeatherService;
+import com.example.quisy.astroweatherandroid.Services.LocationService;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
             }, delay);
 
         }
+
+        new Test().execute();
+
     }
 
     @Override
@@ -96,6 +113,22 @@ public class MainActivity extends AppCompatActivity {
         Moon.Age = Double.toString(moonInfo.getAge());
         Moon.Illumination = Double.toString(moonInfo.getIllumination());
 
+    }
+
+    class Test extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... uri) {
+            LocationService ls = new LocationService();
+            ls.Add("lodz");
+            return "ss";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            //Do anything with response..
+        }
     }
 
 }
