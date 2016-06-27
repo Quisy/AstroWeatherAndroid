@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.astrocalculator.AstroCalculator;
+import com.example.quisy.astroweatherandroid.Models.Moon;
+import com.example.quisy.astroweatherandroid.Models.Settings;
 
 public class MoonInfoFragment extends Fragment {
 
-    private AstroWeatherService _astroWeatherService;
+
     TextView lblMoonrise, lblMoonset, lblNextFullMoon, lblNextNewMoon, lblMoonAge, lblMoonIllumination;
 
 
@@ -24,7 +26,6 @@ public class MoonInfoFragment extends Fragment {
                 R.layout.fragment_moon_info, container, false);
 
 
-        _astroWeatherService = new AstroWeatherService();
         lblMoonrise = (TextView) rootView.findViewById(R.id.lblMoonrise);
         lblMoonset = (TextView) rootView.findViewById(R.id.lblMoonset);
         lblNextFullMoon = (TextView) rootView.findViewById(R.id.lblNextFullMoon);
@@ -34,15 +35,12 @@ public class MoonInfoFragment extends Fragment {
 
 
 
-        AstroCalculator.MoonInfo moonInfo = _astroWeatherService.getMoonInfo();
-
-
-        lblMoonrise.setText("Moonrise: " + moonInfo.getMoonrise().toString());
-        lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
-        lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
-        lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
-        lblMoonAge.setText("Age: " + Double.toString(moonInfo.getAge()));
-        lblMoonIllumination.setText("Illumination: " +Double.toString(moonInfo.getIllumination()));
+        lblMoonrise.setText("Moonrise: " + Moon.Moonrise);
+        lblMoonset.setText("Sunset: " + Moon.MoonSet);
+        lblNextFullMoon.setText("Next full moon: " + Moon.NextFullMoon);
+        lblNextNewMoon.setText("Next new moon: " + Moon.NextNewMoon);
+        lblMoonAge.setText("Age: " + Moon.Age);
+        lblMoonIllumination.setText("Illumination: " + Moon.Illumination);
 
 
         final Handler hMoon = new Handler();
@@ -52,14 +50,14 @@ public class MoonInfoFragment extends Fragment {
 
             hMoon.postDelayed(new Runnable() {
                 public void run() {
-                    AstroCalculator.MoonInfo moonInfo = _astroWeatherService.getMoonInfo();
 
-                    lblMoonrise.setText("Moonrise: " + moonInfo.getMoonrise().toString());
-                    lblMoonset.setText("Sunset: " + moonInfo.getMoonset().toString());
-                    lblNextFullMoon.setText("Next full moon: " + moonInfo.getNextFullMoon().toString());
-                    lblNextNewMoon.setText("Next new moon: " + moonInfo.getNextNewMoon().toString());
-                    lblMoonAge.setText("Age: " + Double.toString(moonInfo.getAge()));
-                    lblMoonIllumination.setText("Illumination: " +Double.toString(moonInfo.getIllumination()));
+                    lblMoonrise.setText("Moonrise: " + Moon.Moonrise);
+                    lblMoonset.setText("Sunset: " + Moon.MoonSet);
+                    lblNextFullMoon.setText("Next full moon: " + Moon.NextFullMoon);
+                    lblNextNewMoon.setText("Next new moon: " + Moon.NextNewMoon);
+                    lblMoonAge.setText("Age: " + Moon.Age);
+                    lblMoonIllumination.setText("Illumination: " + Moon.Illumination);
+
                     hMoon.postDelayed(this, delay);
                 }
             }, delay);

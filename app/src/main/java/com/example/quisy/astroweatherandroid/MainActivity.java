@@ -3,12 +3,21 @@ package com.example.quisy.astroweatherandroid;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astrocalculator.AstroCalculator;
+import com.example.quisy.astroweatherandroid.Models.Moon;
+import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Models.Sun;
+
+
 public class MainActivity extends AppCompatActivity {
+
+    private AstroWeatherService _astroWeatherService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +26,25 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final Handler h = new Handler();
+        final int delay = Settings.Time.RefreshTime * 60000;
+
+        _astroWeatherService = new AstroWeatherService();
+
+        GetAstroData();
+
+        if (delay > 0) {
+
+            h.postDelayed(new Runnable() {
+                public void run() {
+
+                    GetAstroData();
+
+                    h.postDelayed(this, delay);
+                }
+            }, delay);
+
+        }
     }
 
     @Override
@@ -48,5 +76,26 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void GetAstroData()
+    {
+        AstroCalculator.SunInfo sunInfo = _astroWeatherService.getSunInfo();
+        AstroCalculator.MoonInfo moonInfo = _astroWeatherService.getMoonInfo();
+
+        Sun.Sunrise = sunInfo.getSunrise().toString();
+        Sun.SunriseAzimuth = String.valueOf(sunInfo.getAzimuthRise());
+        Sun.Sunset = sunInfo.getSunset().toString();
+        Sun.SunsetAzimuth = String.valueOf(sunInfo.getAzimuthSet());
+        Sun.TwilightMorning = sunInfo.getTwilightMorning().toString();
+        Sun.TwilightEvening = sunInfo.getTwilightEvening().toString();
+
+        Moon.Moonrise = moonInfo.getMoonrise().toString();
+        Moon.MoonSet = moonInfo.getMoonset().toString();
+        Moon.NextFullMoon = moonInfo.getNextFullMoon().toString();
+        Moon.NextNewMoon = moonInfo.getNextNewMoon().toString();
+        Moon.Age = Double.toString(moonInfo.getAge());
+        Moon.Illumination = Double.toString(moonInfo.getIllumination());
+
+    }
 
 }

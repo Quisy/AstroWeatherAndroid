@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.quisy.astroweatherandroid.Models.Settings;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Button btnSave;

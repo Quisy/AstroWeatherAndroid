@@ -3,16 +3,14 @@ package com.example.quisy.astroweatherandroid;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.astrocalculator.AstroCalculator;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Models.Sun;
 
 
 /**
@@ -21,7 +19,6 @@ import java.util.Calendar;
 public class SunInfoFragment extends Fragment {
 
 
-    private AstroWeatherService _astroWeatherService;
     TextView lblSunrise, lblSunriseAzimuth, lblSunset, lblSunsetAzimuth, lblTwilightMorning, lblTwilightEvening, lblTime;
 
 
@@ -32,7 +29,6 @@ public class SunInfoFragment extends Fragment {
                 R.layout.fragment_sun_info, container, false);
 
 
-        _astroWeatherService = new AstroWeatherService();
         lblSunrise = (TextView) rootView.findViewById(R.id.lblSunrise);
         lblSunriseAzimuth = (TextView) rootView.findViewById(R.id.lblSunriseAzimuth);
         lblSunset = (TextView) rootView.findViewById(R.id.lblSunset);
@@ -41,13 +37,12 @@ public class SunInfoFragment extends Fragment {
         lblTwilightEvening = (TextView) rootView.findViewById(R.id.lblTwilightEvening);
 
 
-        AstroCalculator.SunInfo sunInfo = _astroWeatherService.getSunInfo();
-        lblSunrise.setText("Sunrise: " + sunInfo.getSunrise().toString());
-        lblSunriseAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
-        lblSunset.setText("Sunset: " + sunInfo.getSunset().toString());
-        lblSunsetAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
-        lblTwilightMorning.setText("Twilight morning: " + sunInfo.getTwilightMorning().toString());
-        lblTwilightEvening.setText("Twilight evening: " + sunInfo.getTwilightEvening().toString());
+        lblSunrise.setText("Sunrise: " + Sun.Sunrise);
+        lblSunriseAzimuth.setText("Sunrise azimuth: " + Sun.SunriseAzimuth);
+        lblSunset.setText("Sunset: " + Sun.Sunset);
+        lblSunsetAzimuth.setText("Sunrise azimuth: " + Sun.SunsetAzimuth);
+        lblTwilightMorning.setText("Twilight morning: " + Sun.TwilightMorning);
+        lblTwilightEvening.setText("Twilight evening: " + Sun.TwilightMorning);
 
 
         final Handler hSun = new Handler();
@@ -58,13 +53,12 @@ public class SunInfoFragment extends Fragment {
             hSun.postDelayed(new Runnable() {
                 public void run() {
 
-                    AstroCalculator.SunInfo sunInfo = _astroWeatherService.getSunInfo();
-                    lblSunrise.setText("Sunrise: " + sunInfo.getSunrise().toString());
-                    lblSunriseAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
-                    lblSunset.setText("Sunset: " + sunInfo.getSunset().toString());
-                    lblSunsetAzimuth.setText("Sunrise azimuth: " + String.valueOf(sunInfo.getAzimuthRise()));
-                    lblTwilightMorning.setText("Twilight morning: " + sunInfo.getTwilightMorning().toString());
-                    lblTwilightEvening.setText("Twilight evening: " + sunInfo.getTwilightEvening().toString());
+                    lblSunrise.setText("Sunrise: " + Sun.Sunrise);
+                    lblSunriseAzimuth.setText("Sunrise azimuth: " + Sun.SunriseAzimuth);
+                    lblSunset.setText("Sunset: " + Sun.Sunset);
+                    lblSunsetAzimuth.setText("Sunrise azimuth: " + Sun.SunsetAzimuth);
+                    lblTwilightMorning.setText("Twilight morning: " + Sun.TwilightMorning);
+                    lblTwilightEvening.setText("Twilight evening: " + Sun.TwilightMorning);
                     hSun.postDelayed(this, delay);
                 }
             }, delay);

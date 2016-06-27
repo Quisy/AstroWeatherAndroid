@@ -2,6 +2,7 @@ package com.example.quisy.astroweatherandroid;
 
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
+import com.example.quisy.astroweatherandroid.Models.Settings;
 
 import java.util.Calendar;
 
