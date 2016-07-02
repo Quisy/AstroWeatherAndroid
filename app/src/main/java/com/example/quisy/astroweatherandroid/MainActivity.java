@@ -1,5 +1,6 @@
 package com.example.quisy.astroweatherandroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import com.example.quisy.astroweatherandroid.Models.Settings;
 import com.example.quisy.astroweatherandroid.Models.Sun;
 import com.example.quisy.astroweatherandroid.Services.AstroWeatherService;
 import com.example.quisy.astroweatherandroid.Services.LocationService;
+import com.example.quisy.astroweatherandroid.Services.WeatherService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         _astroWeatherService = new AstroWeatherService();
 
+        LoadData();
         GetAstroData();
 
         if (delay > 0) {
@@ -60,8 +63,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+
+        //GetWeatherData();
+
         new Test().execute();
 
+    }
+
+    private void LoadData() {
+        LocationService ls = new LocationService(getApplicationContext());
+        ls.loadCurrentLocation();
     }
 
     @Override
@@ -115,12 +127,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void GetWeatherData()
+    {
+        Context context = getApplicationContext();
+        LocationService ls = new LocationService(context);
+        //context.deleteFile("locations.txt");
+        //ls.Add("Lodz");
+        //ls.Add("Warszawa");
+        WeatherService ws = new WeatherService(context);
+        ws.getWeatherInfo("505120");
+    }
+
     class Test extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... uri) {
-            LocationService ls = new LocationService();
-            ls.Add("lodz");
+            GetWeatherData();
             return "ss";
         }
 

@@ -3,6 +3,7 @@ package com.example.quisy.astroweatherandroid.Services;
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
 import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Models.SharedData;
 
 import java.util.Calendar;
 
@@ -33,7 +34,9 @@ public class AstroWeatherService {
 
     private AstroCalculator.Location getLocation()
     {
-        return new AstroCalculator.Location(Settings.Location.Latitude,Settings.Location.Longitude);
+        Double latitude = Double.parseDouble(SharedData.currentLocation.getLatitude());
+        Double longitude = Double.parseDouble(SharedData.currentLocation.getLongitude());
+        return new AstroCalculator.Location(latitude,longitude);
     }
 
     private AstroDateTime getCurrentDateTime()
