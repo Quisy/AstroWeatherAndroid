@@ -9,6 +9,5 @@ public class SharedData {
 
     public static WeatherInfo weatherInfo = new WeatherInfo();
     public static Location currentLocation = new Location();
-
-
+    public static Units units = new Units();
 }

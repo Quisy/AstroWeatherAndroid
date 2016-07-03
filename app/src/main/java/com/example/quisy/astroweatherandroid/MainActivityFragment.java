@@ -1,6 +1,7 @@
 package com.example.quisy.astroweatherandroid;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +16,8 @@ import android.view.ViewGroup;
 
 public class MainActivityFragment extends Fragment {
 
-    private static final int NUM_PAGES = 2;
+    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES_LANDSCAPE = 2;
 
     private FragmentActivity myContext;
     private ViewPager mPager;
@@ -30,9 +32,16 @@ public class MainActivityFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        int orientation = this.getActivity().getResources().getConfiguration().orientation;
+
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) view.findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(myContext.getSupportFragmentManager());
+
+        if (orientation == Configuration.ORIENTATION_PORTRAIT)
+            mPagerAdapter = new ScreenSlidePagerAdapter(myContext.getSupportFragmentManager());
+        else
+            mPagerAdapter = new ScreenSlidePagerAdapterLandscape(myContext.getSupportFragmentManager());
+
         mPager.setAdapter(mPagerAdapter);
 
         return view;
@@ -40,7 +49,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        myContext=(FragmentActivity) activity;
+        myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
 
@@ -51,12 +60,13 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0)
-            {
+            if (position == 0) {
+                return new WeatherPrimaryFragment();
+            } else if (position == 1) {
+                return new WeatherAdditionalFragment();
+            } else if (position == 2) {
                 return new SunInfoFragment();
-            }
-            else
-            {
+            } else {
                 return new MoonInfoFragment();
             }
 
@@ -65,6 +75,27 @@ public class MainActivityFragment extends Fragment {
         @Override
         public int getCount() {
             return NUM_PAGES;
+        }
+    }
+
+    private class ScreenSlidePagerAdapterLandscape extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapterLandscape(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new WeatherInfoFragment();
+            } else {
+                return new AstroInfoFragment();
+            }
+
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES_LANDSCAPE;
         }
     }
 }

@@ -3,6 +3,8 @@ package com.example.quisy.astroweatherandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         LoadData();
         GetAstroData();
+        GetWeatherData();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        GetWeatherData();
+
 
         //new Test().execute();
 
@@ -82,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadData() {
         LocationService ls = new LocationService(getApplicationContext());
-        ls.loadCurrentLocation();
+        WeatherService ws = new WeatherService(getApplicationContext());
+        SharedData.currentLocation = ls.loadCurrentLocation();
+        SharedData.units = ws.LoadUnits();
     }
 
     @Override
@@ -148,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
         WeatherService ws = new WeatherService(context);
         ws.getWeatherInfo(SharedData.currentLocation.getWoeid());
     }
+
+
 
     class Test extends AsyncTask<String, String, String> {
 

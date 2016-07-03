@@ -1,15 +1,23 @@
 package com.example.quisy.astroweatherandroid.Services;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.example.quisy.astroweatherandroid.Models.Atmosphere;
 import com.example.quisy.astroweatherandroid.Models.SharedData;
+import com.example.quisy.astroweatherandroid.Models.Units;
 import com.example.quisy.astroweatherandroid.Models.WeatherInfo;
 import com.example.quisy.astroweatherandroid.Models.Wind;
+import com.fatboyindustrial.gsonjodatime.Converters;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,28 +30,34 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Created by Mariusz on 2016-07-02.
  */
 public class WeatherService {
 
-    Gson gson = new Gson();
+    final Gson gson = Converters.registerDateTime(new GsonBuilder()).create();
     private Context _context;
 
-    public WeatherService(Context context)
-    {
+    public WeatherService(Context context) {
         _context = context;
     }
 
-    public void downloadWeatherInfo(String woeid)
-    {
-        getFromApi(woeid);
+    public void downloadWeatherInfo(String woeid) {
+        if (isConnected())
+            getFromApi(woeid);
     }
 
     public void getWeatherInfo(String woeid) {
-        //getFromApi(woeid, context);
-        getFromLocalData();
+        WeatherInfo info = getFromLocalData();
+        if (info != null) {
+            if (isOldData(info.gettingDate) && isConnected())
+                getFromApi(woeid);
+            else
+                SharedData.weatherInfo = info;
+        } else if (isConnected())
+            getFromApi(woeid);
     }
 
     private void saveToLocalData(String data) {
@@ -59,7 +73,7 @@ public class WeatherService {
         }
     }
 
-    private void getFromLocalData() {
+    private WeatherInfo getFromLocalData() {
         String filename = "weather.txt";
         FileInputStream inputstream;
         StringBuilder builder = new StringBuilder();
@@ -67,14 +81,15 @@ public class WeatherService {
         try {
             inputstream = _context.openFileInput(filename);
             int ch;
-            while((ch = inputstream.read()) != -1){
-                builder.append((char)ch);
+            while ((ch = inputstream.read()) != -1) {
+                builder.append((char) ch);
             }
             String data = builder.toString();
-            SharedData.weatherInfo = gson.fromJson(data, WeatherInfo.class);
+            return gson.fromJson(data, WeatherInfo.class);
 
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -99,14 +114,10 @@ public class WeatherService {
             JsonObject jobject = jelement.getAsJsonObject();
             jobject = jobject.getAsJsonObject("query");
             jobject = jobject.getAsJsonObject("results");
-            //jobject = jobject.getAsJsonObject("channel");
             JsonElement channelElement = jobject.get("channel");
-            //JsonElement windElement = jobject.get("wind");
-            //JsonElement atmosphereElement = jobject.get("atmosphere");
-
-            //SharedData.WeatherInfo data = gson.fromJson(channelElement, SharedData.WeatherInfo.class);
 
             SharedData.weatherInfo = gson.fromJson(channelElement, WeatherInfo.class);
+            SharedData.weatherInfo.gettingDate = new DateTime();
 
             saveToLocalData(gson.toJson(SharedData.weatherInfo));
 
@@ -117,4 +128,57 @@ public class WeatherService {
             e.printStackTrace();
         }
     }
+
+    public void SaveUnits(Units units) {
+        String filename = "units.txt";
+        FileOutputStream outputStream;
+
+        try {
+            String data = gson.toJson(units);
+            outputStream = _context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(data.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Units LoadUnits() {
+        String filename = "units.txt";
+        FileInputStream inputstream;
+        StringBuilder builder = new StringBuilder();
+
+        try {
+            inputstream = _context.openFileInput(filename);
+            int ch;
+            while ((ch = inputstream.read()) != -1) {
+                builder.append((char) ch);
+            }
+            String data = builder.toString();
+            return gson.fromJson(data, Units.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Units();
+        }
+    }
+
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        } else
+            return false;
+    }
+
+    private boolean isOldData(DateTime dateTime) {
+        Period p = new Period(dateTime, new DateTime());
+        int hours = p.getHours();
+        int minutes = p.getMinutes();
+        return minutes > 30;
+    }
+
 }

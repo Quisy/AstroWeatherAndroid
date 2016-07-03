@@ -152,7 +152,7 @@ public class LocationService {
 
     }
 
-    public void loadCurrentLocation() {
+    public Location loadCurrentLocation() {
         FileInputStream inputstream;
         StringBuilder builder = new StringBuilder();
 
@@ -164,10 +164,11 @@ public class LocationService {
             }
             String data = builder.toString();
 
-            SharedData.currentLocation = gson.fromJson(data, Location.class);
+            return gson.fromJson(data, Location.class);
 
         } catch (IOException e) {
             e.printStackTrace();
+            return new Location();
         }
     }
 

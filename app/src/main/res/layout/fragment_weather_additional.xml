@@ -16,48 +16,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Weather basic"/>
+            android:text="Weather additional"/>
 
-        <TextView android:id="@+id/lblLocationName"
+        <TextView android:id="@+id/lblWindSpeed"
             style="?android:textAppearanceSmall"
             android:lineSpacingMultiplier="1.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Test" />
 
-        <TextView android:id="@+id/lblCoordinates"
+        <TextView android:id="@+id/lblHumidity"
             style="?android:textAppearanceSmall"
             android:lineSpacingMultiplier="1.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Test" />
 
-        <TextView android:id="@+id/lblCondition"
+        <TextView android:id="@+id/lblVisibility"
             style="?android:textAppearanceSmall"
             android:lineSpacingMultiplier="1.2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Test" />
-
-        <TextView android:id="@+id/lblTemperature"
-            style="?android:textAppearanceSmall"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test" />
-
-        <TextView android:id="@+id/lblPressure"
-            style="?android:textAppearanceSmall"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test" />
-
-
 
 
 
     </LinearLayout>
 
 </ScrollView>
+
+
 
