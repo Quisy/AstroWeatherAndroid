@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import com.astrocalculator.AstroCalculator;
 import com.example.quisy.astroweatherandroid.Models.Moon;
 import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Models.SharedData;
 import com.example.quisy.astroweatherandroid.Models.Sun;
 import com.example.quisy.astroweatherandroid.Services.AstroWeatherService;
 import com.example.quisy.astroweatherandroid.Services.LocationService;
@@ -38,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        _astroWeatherService = new AstroWeatherService();
+
+        LoadData();
+        GetAstroData();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,10 +56,8 @@ public class MainActivity extends AppCompatActivity {
         final Handler h = new Handler();
         final int delay = Settings.Time.RefreshTime * 60000;
 
-        _astroWeatherService = new AstroWeatherService();
 
-        LoadData();
-        GetAstroData();
+
 
         if (delay > 0) {
 
@@ -65,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //GetWeatherData();
+        GetWeatherData();
 
-        new Test().execute();
+        //new Test().execute();
 
     }
 
@@ -132,10 +141,12 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         LocationService ls = new LocationService(context);
         //context.deleteFile("locations.txt");
+        //context.deleteFile("weather.txt");
+        //context.deleteFile("location.txt");
         //ls.Add("Lodz");
         //ls.Add("Warszawa");
         WeatherService ws = new WeatherService(context);
-        ws.getWeatherInfo("505120");
+        ws.getWeatherInfo(SharedData.currentLocation.getWoeid());
     }
 
     class Test extends AsyncTask<String, String, String> {

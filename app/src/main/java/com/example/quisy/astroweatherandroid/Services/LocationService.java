@@ -49,7 +49,7 @@ public class LocationService {
     }
 
 
-    public void Add(String city) {
+    public Location Add(String city) {
         try {
 
             String urll = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places(1)%20where%20text=%27" + city + ",%20pl%27&format=json";
@@ -73,16 +73,18 @@ public class LocationService {
             jobject = jobject.getAsJsonObject("place");
 
             String woeid = jobject.get("woeid").toString();
-            woeid = woeid.substring(1).substring(0,woeid.length()-2);
+            woeid = woeid.substring(1).substring(0, woeid.length() - 2);
             String name = jobject.get("name").toString();
-            name = name.substring(1).substring(0,name.length()-2);
+            name = name.substring(1).substring(0, name.length() - 2);
+
+            JsonElement adminJElement =  jobject.get("admin1");
 
             jobject = jobject.getAsJsonObject("centroid");
 
             String latitude = jobject.get("latitude").toString();
-            latitude = latitude.substring(1).substring(0,latitude.length()-2);
+            latitude = latitude.substring(1).substring(0, latitude.length() - 2);
             String longitude = jobject.get("longitude").toString();
-            longitude = longitude.substring(1).substring(0,longitude.length()-2);
+            longitude = longitude.substring(1).substring(0, longitude.length() - 2);
 
             Location location = new Location();
             location.setName(name);
@@ -93,18 +95,23 @@ public class LocationService {
             SharedData.currentLocation = location;
             List<Location> locations = getLocations();
 
-            if (!locations.contains(location))
-            {
+
+
+            if (!locations.contains(location) && !adminJElement.toString().equals("null")) {
                 locations.add(location);
 
-                saveToLocalData(gson.toJson(locations),allLocationsFilename);
-                saveToLocalData(gson.toJson(location),currentLocationFilename);
+                saveToLocalData(gson.toJson(locations), allLocationsFilename);
+                saveToLocalData(gson.toJson(location), currentLocationFilename);
+
+                return location;
             }
 
+            return null;
 
         } catch (IOException e) {
 
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -133,7 +140,8 @@ public class LocationService {
             }
             String data = builder.toString();
 
-            Type listType = new TypeToken<ArrayList<Location>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Location>>() {
+            }.getType();
             List<Location> locations = gson.fromJson(data, listType);
             return locations;
 
@@ -144,8 +152,7 @@ public class LocationService {
 
     }
 
-    public void loadCurrentLocation()
-    {
+    public void loadCurrentLocation() {
         FileInputStream inputstream;
         StringBuilder builder = new StringBuilder();
 
@@ -164,8 +171,7 @@ public class LocationService {
         }
     }
 
-    public void changeCurrentLocation(Location location)
-    {
+    public void changeCurrentLocation(Location location) {
         saveToLocalData(gson.toJson(location), currentLocationFilename);
         SharedData.currentLocation = location;
     }

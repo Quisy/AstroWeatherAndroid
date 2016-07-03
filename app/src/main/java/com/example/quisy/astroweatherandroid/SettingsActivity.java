@@ -24,8 +24,8 @@ import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Button btnSave;
-    private EditText txtLatitude, txtLongitude, txtRefreshTime;
+    private Button btnSave, btnAddCity;
+    private EditText txtLatitude, txtLongitude, txtRefreshTime, txtNewCity;
     private Spinner spinner;
     private LocationService _locationService;
     private WeatherService _weatherService;
@@ -41,6 +41,66 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         StrictMode.setThreadPolicy(policy);
 
         _weatherService = new WeatherService(getApplicationContext());
+
+        getLocations();
+
+        btnSave = (Button) findViewById(R.id.btnSave);
+        btnAddCity = (Button) findViewById(R.id.btnAddCity);
+        txtNewCity = (EditText) findViewById(R.id.txtNewCity);
+        //txtLatitude = (EditText) findViewById(R.id.txtLatitude);
+        //txtLatitude.setText(String.valueOf(Settings.Location.Latitude));
+        //txtLongitude = (EditText) findViewById(R.id.txtLongitude);
+        //txtLongitude.setText(String.valueOf(Settings.Location.Longitude));
+        txtRefreshTime = (EditText) findViewById(R.id.txtRefreshTime);
+        txtRefreshTime.setText(String.valueOf(Settings.Time.RefreshTime));
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveSettings();
+            }
+        });
+        btnAddCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCity();
+            }
+        });
+
+    }
+
+    private void addCity()
+    {
+        _locationService = new LocationService(getApplicationContext());
+        Location location = _locationService.Add(txtNewCity.getText().toString());
+        getLocations();
+        txtNewCity.setText("");
+        if(location != null)
+            Toast.makeText(getApplicationContext(), "Added: " + location.getName(), Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(getApplicationContext(), "Location doesn't exist!", Toast.LENGTH_LONG).show();
+
+    }
+
+
+    private void saveSettings()
+    {
+        _locationService = new LocationService(getApplicationContext());
+        _weatherService = new WeatherService(getApplicationContext());
+        List<Location> locations = _locationService.getLocations();
+        _locationService.changeCurrentLocation(locations.get(spinner.getSelectedItemPosition()));
+        _weatherService.downloadWeatherInfo(locations.get(spinner.getSelectedItemPosition()).getWoeid());
+
+        //Settings.Location.Longitude = Double.parseDouble(txtLongitude.getText().toString());
+        //Settings.Location.Latitude = Double.parseDouble(txtLatitude.getText().toString());
+        Settings.Time.RefreshTime = Integer.parseInt(txtRefreshTime.getText().toString());
+
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void getLocations()
+    {
         _locationService = new LocationService(getApplicationContext());
         List<Location> locations = _locationService.getLocations();
         List<String> locationNames = new ArrayList<>();
@@ -62,38 +122,6 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
         Location currentLocation = SharedData.currentLocation;
         spinner.setSelection(locationNames.indexOf(currentLocation.getName()));
-
-        btnSave = (Button) findViewById(R.id.btnSave);
-        txtLatitude = (EditText) findViewById(R.id.txtLatitude);
-        txtLatitude.setText(String.valueOf(Settings.Location.Latitude));
-        txtLongitude = (EditText) findViewById(R.id.txtLongitude);
-        txtLongitude.setText(String.valueOf(Settings.Location.Longitude));
-        txtRefreshTime = (EditText) findViewById(R.id.txtRefreshTime);
-        txtRefreshTime.setText(String.valueOf(Settings.Time.RefreshTime));
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SaveSettings();
-            }
-        });
-
-    }
-
-    private void SaveSettings()
-    {
-        _locationService = new LocationService(getApplicationContext());
-        _weatherService = new WeatherService(getApplicationContext());
-        List<Location> locations = _locationService.getLocations();
-        _locationService.changeCurrentLocation(locations.get(spinner.getSelectedItemPosition()));
-        _weatherService.downloadWeatherInfo(locations.get(spinner.getSelectedItemPosition()).getWoeid());
-
-        Settings.Location.Longitude = Double.parseDouble(txtLongitude.getText().toString());
-        Settings.Location.Latitude = Double.parseDouble(txtLatitude.getText().toString());
-        Settings.Time.RefreshTime = Integer.parseInt(txtRefreshTime.getText().toString());
-
-        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -103,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
 
     }

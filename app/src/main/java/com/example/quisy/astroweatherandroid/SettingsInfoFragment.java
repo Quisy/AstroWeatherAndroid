@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.quisy.astroweatherandroid.Models.Settings;
+import com.example.quisy.astroweatherandroid.Models.SharedData;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +33,8 @@ public class SettingsInfoFragment extends Fragment {
         lblTime = (TextView) rootView.findViewById(R.id.lblTime);
         lblLocation = (TextView) rootView.findViewById(R.id.lblLocation);
 
-        lblLocation.setText("Location: " + Double.toString(Settings.Location.Longitude) + ", " + Double.toString(Settings.Location.Latitude));
+        //lblLocation.setText("Location: " + Double.toString(Settings.Location.Longitude) + ", " + Double.toString(Settings.Location.Latitude));
+        lblLocation.setText("Location: " +  SharedData.currentLocation.getName() + "   " + SharedData.currentLocation.getLongitude() + ", " + SharedData.currentLocation.getLatitude());
 
         final Handler hTime = new Handler();
 
