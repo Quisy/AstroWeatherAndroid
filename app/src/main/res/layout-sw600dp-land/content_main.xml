@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
-    android:rowCount="2"
+    android:rowCount="4"
     android:columnCount="2"
     android:orientation="vertical">
 
@@ -27,7 +27,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="0.1">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,7 +45,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="0.1">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,6 +55,23 @@
             android:layout_weight="0.5"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:layout="@layout/fragment_astro_info"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragmentWeatherForecast"
+            android:name="com.example.quisy.astroweatherandroid.WeatherForecastFragment"
+            android:layout_weight="0.5"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/fragment_weather_forecast"
             android:layout_height="match_parent"
             android:layout_width="match_parent" />
     </TableRow>

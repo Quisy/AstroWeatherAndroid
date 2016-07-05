@@ -8,11 +8,13 @@ import java.util.Date;
 public class Forecast {
     private String date;
 
-    private String high;
+    private int high;
 
-    private String low;
+    private int low;
 
     private String text;
+
+    private int code;
 
 
     public String getDate() {
@@ -23,19 +25,35 @@ public class Forecast {
         this.date = date;
     }
 
-    public String getHigh() {
-        return high;
+    public int getHigh() {
+        switch (SharedData.units.getTempUnit())
+        {
+            case CELSIUS:
+                return high;
+            case KELVIN:
+                return high + 273;
+            default:
+                return high;
+        }
     }
 
-    public void setHigh(String high) {
+    public void setHigh(int high) {
         this.high = high;
     }
 
-    public String getLow() {
-        return low;
+    public int getLow() {
+        switch (SharedData.units.getTempUnit())
+        {
+            case CELSIUS:
+                return low;
+            case KELVIN:
+                return low + 273;
+            default:
+                return low;
+        }
     }
 
-    public void setLow(String low) {
+    public void setLow(int low) {
         this.low = low;
     }
 
@@ -45,5 +63,13 @@ public class Forecast {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

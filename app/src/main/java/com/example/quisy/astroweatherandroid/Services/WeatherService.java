@@ -3,6 +3,7 @@ package com.example.quisy.astroweatherandroid.Services;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.example.quisy.astroweatherandroid.Models.Atmosphere;
 import com.example.quisy.astroweatherandroid.Models.SharedData;
@@ -47,6 +48,8 @@ public class WeatherService {
     public void downloadWeatherInfo(String woeid) {
         if (isConnected())
             getFromApi(woeid);
+        else
+            Toast.makeText(_context, "No internet connection!", Toast.LENGTH_LONG).show();
     }
 
     public void getWeatherInfo(String woeid) {
@@ -54,10 +57,16 @@ public class WeatherService {
         if (info != null) {
             if (isOldData(info.gettingDate) && isConnected())
                 getFromApi(woeid);
-            else
+            else {
                 SharedData.weatherInfo = info;
+                if(!isConnected())
+                    Toast.makeText(_context, "No internet connection! Data may be not current!", Toast.LENGTH_LONG).show();
+            }
         } else if (isConnected())
             getFromApi(woeid);
+        else {
+            Toast.makeText(_context, "No internet connection! Cannot get data!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void saveToLocalData(String data) {
@@ -126,6 +135,9 @@ public class WeatherService {
 
         } catch (IOException e) {
             e.printStackTrace();
+            SharedData.weatherInfo = new WeatherInfo();
+            SharedData.weatherInfo.gettingDate = new DateTime();
+            saveToLocalData(gson.toJson(SharedData.weatherInfo));
         }
     }
 

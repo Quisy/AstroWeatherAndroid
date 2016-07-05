@@ -1,7 +1,10 @@
 package com.example.quisy.astroweatherandroid.Services;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.quisy.astroweatherandroid.Models.Location;
 import com.example.quisy.astroweatherandroid.Models.SharedData;
@@ -52,6 +55,12 @@ public class LocationService {
     public Location Add(String city) {
         try {
 
+            if(!isConnected())
+            {
+                Toast.makeText(_context, "No internet connection! Cannot get data!", Toast.LENGTH_LONG).show();
+                return null;
+            }
+
             String urll = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places(1)%20where%20text=%27" + city + ",%20pl%27&format=json";
             URL url = new URL(urll);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -77,7 +86,7 @@ public class LocationService {
             String name = jobject.get("name").toString();
             name = name.substring(1).substring(0, name.length() - 2);
 
-            JsonElement adminJElement =  jobject.get("admin1");
+            JsonElement adminJElement = jobject.get("admin1");
 
             jobject = jobject.getAsJsonObject("centroid");
 
@@ -94,7 +103,6 @@ public class LocationService {
 
             SharedData.currentLocation = location;
             List<Location> locations = getLocations();
-
 
 
             if (!locations.contains(location) && !adminJElement.toString().equals("null")) {
@@ -177,4 +185,14 @@ public class LocationService {
         SharedData.currentLocation = location;
     }
 
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        } else
+            return false;
+    }
 }

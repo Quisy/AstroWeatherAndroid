@@ -4,6 +4,8 @@ package com.example.quisy.astroweatherandroid.Models;
  * Created by Mariusz on 2016-07-03.
  */
 public class Condition {
+    private int code;
+
     private int temp;
 
     private String text;
@@ -18,6 +20,15 @@ public class Condition {
             default:
                 return temp;
         }
+    }
+
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public void setTemp(int temp) {

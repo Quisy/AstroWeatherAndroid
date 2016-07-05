@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 
 public class MainActivityFragment extends Fragment {
 
-    private static final int NUM_PAGES = 4;
-    private static final int NUM_PAGES_LANDSCAPE = 2;
+    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES_LANDSCAPE = 3;
 
     private FragmentActivity myContext;
     private ViewPager mPager;
@@ -65,6 +65,8 @@ public class MainActivityFragment extends Fragment {
             } else if (position == 1) {
                 return new WeatherAdditionalFragment();
             } else if (position == 2) {
+                return new WeatherForecastFragment();
+            } else if (position == 3) {
                 return new SunInfoFragment();
             } else {
                 return new MoonInfoFragment();
@@ -87,6 +89,8 @@ public class MainActivityFragment extends Fragment {
         public Fragment getItem(int position) {
             if (position == 0) {
                 return new WeatherInfoFragment();
+            } else if (position == 1) {
+                return new WeatherForecastFragment();
             } else {
                 return new AstroInfoFragment();
             }

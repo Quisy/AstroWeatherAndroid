@@ -53,8 +53,12 @@
             android:layout_height="wrap_content"
             android:text="Test" />
 
-
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/conditionImage"
+            android:minWidth="100dp"
+            android:minHeight="100dp" />
 
 
     </LinearLayout>

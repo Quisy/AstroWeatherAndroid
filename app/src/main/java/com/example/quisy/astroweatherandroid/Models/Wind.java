@@ -32,7 +32,7 @@ public class Wind {
                 df.setRoundingMode(RoundingMode.CEILING);
                 double val = (speed) * (10.00/36.00);
                 String valS = df.format(val);
-                return Double.parseDouble(valS);
+                return Double.parseDouble(valS.replace(",","."));
             default:
                 return speed;
         }
